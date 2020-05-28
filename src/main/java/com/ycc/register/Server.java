@@ -1,6 +1,7 @@
 package com.ycc.register;
 
 import com.ycc.register.handler.ServerInitHandler;
+import com.ycc.register.info.DataInfo;
 import com.ycc.register.lstener.ServerBoundListener;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.ChannelFuture;
@@ -17,7 +18,6 @@ import org.slf4j.LoggerFactory;
  */
 public class Server {
 
-    int port = 8082;
     private Logger log = LoggerFactory.getLogger(Server.class);
 
     public void init() throws InterruptedException {
@@ -34,8 +34,8 @@ public class Server {
 
     private void serverStart(ServerBootstrap b) throws InterruptedException {
         log.info("服务启动");
-        ChannelFuture f = b.bind(port).sync();
-        f.addListener(new ServerBoundListener(port));
+        ChannelFuture f = b.bind(DataInfo.port).sync();
+        f.addListener(new ServerBoundListener());
         Runtime.getRuntime().addShutdownHook(new Thread(() -> f.channel().close()));
         f.channel().closeFuture().syncUninterruptibly();
     }
