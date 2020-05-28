@@ -29,11 +29,14 @@ public class ServerInitHandler extends ChannelInitializer<SocketChannel> {
         ChannelPipeline pipeline = socketChannel.pipeline();
         ByteBuf delimiter = Unpooled.copiedBuffer("$_$".getBytes());
         pipeline
-                .addLast("framer", new DelimiterBasedFrameDecoder(8192, delimiter))
-                .addLast("decoder", new StringDecoder())
-                .addLast("encoder", new StringEncoder())
-                .addLast(new IdleStateHandler(0, 0, 10, TimeUnit.SECONDS))
-                .addLast(new HeartbeatHandler());
+                //.addLast("framer", new DelimiterBasedFrameDecoder(8192, delimiter))
+//                .addLast("decoder", new StringDecoder())
+//                .addLast("encoder", new StringEncoder())
+                .addLast("httpServerCodec", new HttpServerCodec())
+                .addLast("aggregator", new HttpObjectAggregator(65536))
+                .addLast(new IdleStateHandler(0, 0, 30, TimeUnit.SECONDS))
+                .addLast(new HeartbeatHandler())
+                .addLast("dataRegister",new RegisterHandler());
         log.debug("ChatServerInitializer:" + socketChannel.remoteAddress() + "连接上");
         ;
     }
