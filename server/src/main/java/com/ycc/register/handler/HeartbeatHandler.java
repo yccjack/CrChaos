@@ -1,7 +1,6 @@
 package com.ycc.register.handler;
 
-import com.alibaba.fastjson.JSON;
-import com.ycc.register.info.DataInfo;
+import info.ServiceInfo;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import io.netty.channel.ChannelFutureListener;
@@ -11,6 +10,7 @@ import io.netty.handler.timeout.IdleStateEvent;
 import io.netty.util.CharsetUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
 /**
  * @author MysticalYcc
  * @date 2020/5/29
@@ -20,15 +20,14 @@ public class HeartbeatHandler extends ChannelInboundHandlerAdapter {
     private static final ByteBuf HEARTBEAT_SEQUENCE;
 
     static {
-        DataInfo dataInfo = DataInfo.getDataInfo();
-        HEARTBEAT_SEQUENCE = Unpooled.unreleasableBuffer(Unpooled.copiedBuffer(JSON.toJSONString(dataInfo) + "\n", CharsetUtil.UTF_8));
+        HEARTBEAT_SEQUENCE = Unpooled.unreleasableBuffer(Unpooled.copiedBuffer(ServiceInfo.delimiter, CharsetUtil.UTF_8));
     }
 
     @Override
     public void userEventTriggered(ChannelHandlerContext ctx, Object evt) throws Exception {
         if (evt instanceof IdleStateEvent) {
             ctx.writeAndFlush(HEARTBEAT_SEQUENCE.duplicate()).addListener(ChannelFutureListener.CLOSE_ON_FAILURE);
-            log.info("连接超时未发送任何内容;");
+            log.info("未续约;即将终止此服务");
         } else {
             super.userEventTriggered(ctx, evt);
         }

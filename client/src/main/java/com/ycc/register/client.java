@@ -62,7 +62,7 @@ public class client {
     public void register() {
 
         ServiceInfo serviceInfo = new ServiceInfo();
-        serviceInfo.setServiceName("client1");
+        serviceInfo.setServiceName("client2");
         serviceInfo.setAddr(host + ":" + port);
         channel.writeAndFlush(JSON.toJSONString(serviceInfo) + ServiceInfo.delimiter);
     }
