@@ -11,7 +11,10 @@ import io.netty.handler.timeout.IdleStateEvent;
 import io.netty.util.CharsetUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
+/**
+ * @author MysticalYcc
+ * @date 2020/5/29
+ */
 public class HeartbeatHandler extends ChannelInboundHandlerAdapter {
     private Logger log = LoggerFactory.getLogger(HeartbeatHandler.class);
     private static final ByteBuf HEARTBEAT_SEQUENCE;

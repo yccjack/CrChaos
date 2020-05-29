@@ -9,8 +9,8 @@ import org.slf4j.LoggerFactory;
 import static com.ycc.register.utils.YmlUtil.getValue;
 
 /**
- * @author :MysticalYcc
- * @date :11:12 2019/2/20
+ * @author MysticalYcc
+ * @date 2020/5/29
  */
 public class ServerBoundListener implements ChannelFutureListener {
     private Logger logger = LoggerFactory.getLogger(this.getClass());

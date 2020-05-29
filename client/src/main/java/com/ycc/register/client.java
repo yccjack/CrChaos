@@ -1,7 +1,7 @@
 package com.ycc.register;
 
 import com.alibaba.fastjson.JSON;
-import com.ycc.register.handler.ChatClientInitializer;
+import com.ycc.register.handler.RegisterClientInitializer;
 import com.ycc.register.listener.FutureListener;
 import info.ServiceInfo;
 import io.netty.bootstrap.Bootstrap;
@@ -26,7 +26,7 @@ public class client {
         Bootstrap b = new Bootstrap()
                 .group(group)
                 .channel(NioSocketChannel.class)
-                .handler(new ChatClientInitializer());
+                .handler(new RegisterClientInitializer());
         ChannelFuture sync = null;
         try {
             sync = b.connect(host, port).sync();

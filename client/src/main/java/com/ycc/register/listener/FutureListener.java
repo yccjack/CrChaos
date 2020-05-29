@@ -6,8 +6,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * @author :MysticalYcc
- * @date :11:12 2019/2/20
+ * @author MysticalYcc
+ * @date 2020/5/29
  */
 public class FutureListener implements ChannelFutureListener {
 

@@ -12,11 +12,10 @@ import io.netty.handler.codec.string.StringEncoder;
 
 
 /**
- * @author ycc
- * @version 1.0
- * @date 2019/1/22 9:27
+ * @author MysticalYcc
+ * @date 2020/5/29
  */
-public class ChatClientInitializer extends ChannelInitializer<SocketChannel> {
+public class RegisterClientInitializer extends ChannelInitializer<SocketChannel> {
 
     @Override
     protected void initChannel(SocketChannel socketChannel) throws Exception {
@@ -28,6 +27,6 @@ public class ChatClientInitializer extends ChannelInitializer<SocketChannel> {
                 .addLast("encoder", new StringEncoder())
 //                .addLast("httpServerCodec", new HttpServerCodec())
 //                .addLast("aggregator", new HttpObjectAggregator(65536))
-                .addLast("handler", new ChatClientHandler());
+                .addLast("handler", new RegisterClientHandler());
     }
 }
