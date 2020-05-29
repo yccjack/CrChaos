@@ -1,0 +1,4 @@
+com\ycc\register\handler\ChatClientHandler.class
+com\ycc\register\handler\ChatClientInitializer.class
+com\ycc\register\client.class
+com\ycc\register\listener\FutureListener.class
