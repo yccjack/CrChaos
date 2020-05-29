@@ -1,9 +1,6 @@
 package info;
 
-import io.netty.buffer.ByteBuf;
-import io.netty.buffer.Unpooled;
-
-import java.util.List;
+import java.util.Set;
 
 /**
  * @author MysticalYcc
@@ -11,6 +8,9 @@ import java.util.List;
  */
 public class ServiceInfo {
 
+    /**
+     * 分隔符
+     */
     public static String delimiter = "&_&";
 
     /**
@@ -18,10 +18,6 @@ public class ServiceInfo {
      */
     private String serviceName;
 
-    /**
-     * 服务集群地址
-     */
-    private List<String> addrTree;
 
     private String addr;
     /**
@@ -43,7 +39,14 @@ public class ServiceInfo {
 
         if (obj instanceof ServiceInfo) {
             ServiceInfo serviceInfo = (ServiceInfo) obj;
-            return serviceInfo.getAddr() != null && serviceInfo.getAddr().equals(this.getAddr());
+            int count = 0;
+            if (serviceInfo.getServiceName() != null && serviceInfo.getServiceName().equals(this.getServiceName())) {
+                count++;
+            }
+            if (serviceInfo.getAddr() != null && serviceInfo.getAddr().equals(this.getAddr())) {
+                count++;
+            }
+            return count == 2;
         }
         return false;
     }
@@ -51,7 +54,9 @@ public class ServiceInfo {
     @Override
     public int hashCode() {
         int result = serviceName != null ? serviceName.hashCode() : 0;
+        result = 31 * result;
         result = 31 * result + (addr != null ? addr.hashCode() : 0);
+
         return result;
 
     }
@@ -64,13 +69,6 @@ public class ServiceInfo {
         this.serviceName = serviceName;
     }
 
-    public List<String> getAddrTree() {
-        return addrTree;
-    }
-
-    public void setAddrTree(List<String> addrTree) {
-        this.addrTree = addrTree;
-    }
 
     public int getStatus() {
         return status;

@@ -35,7 +35,7 @@ public class YmlUtil {
         }
     }
 
-    public static void loadYml(){
+    public static void loadYml() {
         loadYml("app.yml");
     }
 
@@ -59,12 +59,11 @@ public class YmlUtil {
         throw new RuntimeException("解析YML文件出错...");
     }
 
-    public static Object getValue(String fileName, String key) {
+    public static String getValue(String fileName, String key) {
         // 首先加载配置文件
         loadYml(fileName);
-        return getValue(key);
+        return String.valueOf(getValue(key));
     }
-
 
 
     public static void main(String[] args) {

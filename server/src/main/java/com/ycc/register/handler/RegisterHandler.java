@@ -19,7 +19,9 @@ import org.slf4j.LoggerFactory;
 
 import java.net.SocketAddress;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * @author MysticalYcc
@@ -32,6 +34,8 @@ public class RegisterHandler extends SimpleChannelInboundHandler<String> {
     private Logger log = LoggerFactory.getLogger(RegisterHandler.class);
 
     private static ChannelGroup channels = new DefaultChannelGroup(GlobalEventExecutor.INSTANCE);
+
+    private static Map<Channel, ServiceInfo> channelServiceInfoMap = new ConcurrentHashMap<>();
 
     /**
      * @param ctx
@@ -49,7 +53,7 @@ public class RegisterHandler extends SimpleChannelInboundHandler<String> {
     @Override
     public void channelInactive(ChannelHandlerContext ctx) throws Exception {
         Channel channel = ctx.channel();
-        notifyChatListRemove(channel);
+        notifyChatListRemove(channel, 1);
     }
 
     /**
@@ -57,8 +61,9 @@ public class RegisterHandler extends SimpleChannelInboundHandler<String> {
      *
      * @param channel
      */
-    private void notifyChatListRemove(Channel channel) {
-
+    private void notifyChatListRemove(Channel channel, int status) {
+        ServiceInfo serviceInfo = channelServiceInfoMap.get(channel);
+        dataInfo.removeService(serviceInfo, status);
     }
 
     /**
@@ -71,7 +76,7 @@ public class RegisterHandler extends SimpleChannelInboundHandler<String> {
         Channel channel = ctx.channel();
         String addr = channel.remoteAddress().toString();
         //删除
-        notifyChatListRemove(channel);
+        notifyChatListRemove(channel, 2);
         log.error("ChatServerHandler" + addr + "异常!");
         cause.printStackTrace();
         ctx.close();
@@ -86,7 +91,8 @@ public class RegisterHandler extends SimpleChannelInboundHandler<String> {
     @Override
     public void handlerAdded(ChannelHandlerContext ctx) throws Exception {
         Channel channel = ctx.channel();
-        channels.add(ctx.channel());
+        log.debug(channel.remoteAddress().toString() + "：连接");
+        channels.add(channel);
     }
 
     /**
@@ -98,35 +104,11 @@ public class RegisterHandler extends SimpleChannelInboundHandler<String> {
     @Override
     public void handlerRemoved(ChannelHandlerContext ctx) throws Exception {
         Channel channel = ctx.channel();
-
+        log.debug(channel.remoteAddress().toString() + "：断开");
         channels.remove(ctx.channel());
     }
 
-    HttpRequest request;
 
-    //    @Override
-//    protected void channelRead0(ChannelHandlerContext channelHandlerContext, HttpObject msg) throws Exception {
-//        if (msg instanceof HttpRequest) {
-//            request = (HttpRequest) msg;
-//            request.method();
-//            String uri = request.uri();
-//            System.out.println("Uri:" + uri);
-//        }
-//        if (msg instanceof HttpContent) {
-//
-//            HttpContent content = (HttpContent) msg;
-//            ByteBuf buf = content.content();
-//            System.out.println(buf.toString(io.netty.util.CharsetUtil.UTF_8));
-//
-//            ByteBuf byteBuf = Unpooled.copiedBuffer("hello world", CharsetUtil.UTF_8);
-//            FullHttpResponse response = new DefaultFullHttpResponse(HttpVersion.HTTP_1_1, HttpResponseStatus.OK, byteBuf);
-//            response.headers().add(HttpHeaderNames.CONTENT_TYPE, "text/plain");
-//            response.headers().add(HttpHeaderNames.CONTENT_LENGTH, byteBuf.readableBytes());
-//
-//            channelHandlerContext.writeAndFlush(response);
-//
-//        }
-//    }
     /**
      * google浏览器第一次请求会请求网站的缩略图，忽略此次请求
      */
@@ -135,8 +117,9 @@ public class RegisterHandler extends SimpleChannelInboundHandler<String> {
     @Override
     protected void channelRead0(ChannelHandlerContext ctx, String msg) throws Exception {
         ServiceInfo serviceInfo = JSON.parseObject(msg, ServiceInfo.class);
-        dataInfo.put(serviceInfo);
-        Set<ServiceInfo> serviceInfos = dataInfo.obtainServices();
+        dataInfo.serviceRegistration(serviceInfo);
+        channelServiceInfoMap.put(ctx.channel(), serviceInfo);
+        Map<String, Set<String>>  serviceInfos = dataInfo.obtainServices();
 
         ctx.writeAndFlush((JSON.toJSONString(serviceInfos) + ServiceInfo.delimiter));
     }

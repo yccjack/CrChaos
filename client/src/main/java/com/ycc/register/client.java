@@ -63,12 +63,12 @@ public class client {
 
         ServiceInfo serviceInfo = new ServiceInfo();
         serviceInfo.setServiceName("client1");
-        serviceInfo.setAddr(host + port);
-        channel.writeAndFlush(JSON.toJSONString(serviceInfo)+ ServiceInfo.delimiter);
+        serviceInfo.setAddr(host + ":" + port);
+        channel.writeAndFlush(JSON.toJSONString(serviceInfo) + ServiceInfo.delimiter);
     }
 
     public static void main(String[] args) {
-        client client  = new client();
+        client client = new client();
         client.start();
     }
 }
