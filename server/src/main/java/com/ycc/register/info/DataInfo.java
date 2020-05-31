@@ -1,9 +1,9 @@
 package com.ycc.register.info;
 
-import info.ServiceInfo;
-import io.netty.channel.Channel;
-
-import java.util.*;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
 
 import static com.ycc.register.utils.YmlUtil.getValue;
 
@@ -15,9 +15,18 @@ public class DataInfo {
 
     private static DataInfo dataInfo = new DataInfo();
 
+    /**
+     * {@link RegisterInfo}
+     */
     private static RegisterInfo registerInfo;
     public static int port;
+    /**
+     * 服务续约时间
+     */
     static int renewalPeriod;
+    /**
+     * 开启时，服务不可用不会立马删除服务，会等待一定的时间删除服务
+     */
     static boolean safeguard = false;
 
     static {
@@ -80,8 +89,14 @@ public class DataInfo {
      * 注册的服务
      */
     private static class RegisterInfo {
-        private Map<String, Set<ServiceInfo>> serviceInfoMap = new HashMap<>();
-        private Map<String, Set<String>> serviceAddrInfos = new HashMap<>();
+        /**
+         * 注册服务的具体信息
+         */
+        private Map<String, Set<ServiceInfo>> serviceInfoMap = new ConcurrentHashMap<>();
+        /**
+         * 注册服务的集群地址
+         */
+        private Map<String, Set<String>> serviceAddrInfos = new ConcurrentHashMap<>();
     }
 
 

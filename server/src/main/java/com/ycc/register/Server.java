@@ -1,6 +1,6 @@
 package com.ycc.register;
 
-import com.ycc.register.handler.ServerInitHandler;
+import com.ycc.register.client.handler.ServerInitHandler;
 import com.ycc.register.info.DataInfo;
 import com.ycc.register.lstener.ServerBoundListener;
 import io.netty.bootstrap.ServerBootstrap;

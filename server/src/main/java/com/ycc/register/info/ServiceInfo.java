@@ -1,6 +1,4 @@
-package info;
-
-import java.util.Set;
+package com.ycc.register.info;
 
 /**
  * @author MysticalYcc

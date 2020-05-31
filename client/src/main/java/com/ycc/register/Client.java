@@ -1,9 +1,8 @@
 package com.ycc.register;
 
 import com.alibaba.fastjson.JSON;
-import com.ycc.register.handler.RegisterClientInitializer;
-import com.ycc.register.listener.FutureListener;
-import info.ServiceInfo;
+import com.ycc.register.client.handler.RegisterClientInitializer;
+import com.ycc.register.client.listener.FutureListener;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelFuture;
@@ -11,15 +10,20 @@ import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.nio.NioSocketChannel;
 
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * @author MysticalYcc
  * @date 2020/5/29
  */
-public class client {
+public class Client {
     private final int port = 8082;
     private final String host = "localhost";
     Channel channel;
     EventLoopGroup group;
+    public static String delimiter = "&_&";
+
 
     public void start() {
         group = new NioEventLoopGroup();
@@ -60,15 +64,14 @@ public class client {
      * @throws Exception
      */
     public void register() {
-
-        ServiceInfo serviceInfo = new ServiceInfo();
-        serviceInfo.setServiceName("client2");
-        serviceInfo.setAddr(host + ":" + port);
-        channel.writeAndFlush(JSON.toJSONString(serviceInfo) + ServiceInfo.delimiter);
+        Map<String,String> map = new HashMap<>();
+        map.put("serviceName","client1");
+        map.put("addr","localhost:8088");
+        channel.writeAndFlush(JSON.toJSONString(map) + delimiter);
     }
 
     public static void main(String[] args) {
-        client client = new client();
+        Client client = new Client();
         client.start();
     }
 }

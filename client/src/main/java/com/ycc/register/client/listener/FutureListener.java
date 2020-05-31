@@ -1,4 +1,4 @@
-package com.ycc.register.listener;
+package com.ycc.register.client.listener;
 
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelFutureListener;
