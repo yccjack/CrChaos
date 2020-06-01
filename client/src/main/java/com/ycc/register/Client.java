@@ -20,8 +20,8 @@ import static com.ycc.register.common.utils.YmlUtil.getValue;
  * @date 2020/5/29
  */
 public class Client {
-    private final int port = 8082;
-    private final String host = "localhost";
+    private int port = (int) getValue("server.register.port");
+    private String host = (String) getValue("server.register.host");
     Channel channel;
     EventLoopGroup group;
     public static String delimiter = "&_&";
@@ -71,10 +71,9 @@ public class Client {
      * @throws Exception
      */
     public void register() {
-
         Object port = getValue("server.port");
-        Object serviceName =getValue("server.client.serviceName");
-        clientInfo.setServiceName( String.valueOf(serviceName));
+        Object serviceName = getValue("server.client.serviceName");
+        clientInfo.setServiceName(String.valueOf(serviceName));
         clientInfo.setAddr(localIp + ":" + port);
         channel.writeAndFlush(JSON.toJSONString(clientInfo) + delimiter);
     }

@@ -8,10 +8,9 @@ import io.netty.channel.Channel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.Map;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.ScheduledThreadPoolExecutor;
+import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -23,12 +22,30 @@ public class Timing {
     /**
      * 服务续约时间
      */
-    public int renewalPeriod = 30;
+    private int renewalPeriod = 30;
+
+    /**
+     * 0:初始状态；1：正在执行定时任务；2：续约时间需要修改；3：注册中心不可用
+     */
+    public int status = 0;
 
     public void renewal() {
+        if (status == 2) {
+
+        }
         ScheduledExecutorService ses = Executors.newScheduledThreadPool(1, new ClientThreadFactory());
         log.debug("服务续约时间为" + renewalPeriod + "s,开始执行定时任务");
-        ses.scheduleAtFixedRate(new ClientTiming(), renewalPeriod, renewalPeriod, TimeUnit.SECONDS);
+        ScheduledFuture<?> scheduledFuture = ses.scheduleAtFixedRate(new ClientTiming(), renewalPeriod, renewalPeriod, TimeUnit.SECONDS);
+        if (status == 2) {
+            scheduledFuture.cancel(true);
+            ses.scheduleAtFixedRate(new ClientTiming(), renewalPeriod, renewalPeriod, TimeUnit.SECONDS);
+            if (scheduledFuture.isCancelled()) {
+                scheduledFuture = null;
+            }
+        }
+
+
+        status = 1;
     }
 
     static class ClientTiming implements Runnable {
@@ -41,6 +58,16 @@ public class Timing {
             ServiceInfo clientInfo = client.getClientInfo();
             clientInfo.setType(1);
             channel.writeAndFlush(JSON.toJSONString(clientInfo) + Client.delimiter);
+        }
+    }
+
+
+    public void setRenewalPeriod(int time) {
+        if (time != renewalPeriod && status != 0) {
+            status = 2;
+            renewalPeriod = time;
+        } else if (time != renewalPeriod) {
+            renewalPeriod = time;
         }
     }
 }
