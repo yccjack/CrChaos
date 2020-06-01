@@ -21,13 +21,14 @@ public class ServiceInfo {
     /**
      * 服务续约时间
      */
-    int renewalPeriod;
+   private int renewalPeriod;
 
     /**
      * 服务状态 0：正常，1：即将下线； 2：异常待恢复；
      */
     private int status = 0;
 
+    private int type=0;
 
     @Override
     public boolean equals(Object obj) {
@@ -59,6 +60,17 @@ public class ServiceInfo {
 
     }
 
+    @Override
+    public String toString() {
+        return "ServiceInfo{" +
+                "serviceName='" + serviceName + '\'' +
+                ", addr='" + addr + '\'' +
+                ", renewalPeriod=" + renewalPeriod +
+                ", status=" + status +
+                ", type=" + type +
+                '}';
+    }
+
     public String getServiceName() {
         return serviceName;
     }
@@ -82,5 +94,21 @@ public class ServiceInfo {
 
     public void setAddr(String addr) {
         this.addr = addr;
+    }
+
+    public int getType() {
+        return type;
+    }
+
+    public void setType(int type) {
+        this.type = type;
+    }
+
+    public int getRenewalPeriod() {
+        return renewalPeriod;
+    }
+
+    public void setRenewalPeriod(int renewalPeriod) {
+        this.renewalPeriod = renewalPeriod;
     }
 }

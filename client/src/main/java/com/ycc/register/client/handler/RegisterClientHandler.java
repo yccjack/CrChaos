@@ -5,6 +5,7 @@ import com.alibaba.fastjson.TypeReference;
 import com.ycc.register.client.banlance.RestRequest;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
+import io.netty.util.internal.StringUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -22,9 +23,14 @@ public class RegisterClientHandler extends SimpleChannelInboundHandler<String> {
 
     @Override
     protected void channelRead0(ChannelHandlerContext channelHandlerContext, String msg) throws Exception {
-        Map<String, Set<String>> services = JSON.parseObject(msg, new TypeReference<Map<String, Set<String>>>() {
-        });
-        restRequest.setServices(services);
+        if (StringUtil.isNullOrEmpty(msg)) {
+            log.info("心跳返回");
+        } else {
+            Map<String, Set<String>> services = JSON.parseObject(msg, new TypeReference<Map<String, Set<String>>>() {
+            });
+            restRequest.setServices(services);
+        }
+
         log.debug(msg);
     }
 

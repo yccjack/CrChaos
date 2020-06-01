@@ -24,6 +24,7 @@ public class Client {
     EventLoopGroup group;
     public static String delimiter = "&_&";
 
+    static Client client = new Client();
 
     public void start() {
         group = new NioEventLoopGroup();
@@ -64,14 +65,22 @@ public class Client {
      * @throws Exception
      */
     public void register() {
-        Map<String,String> map = new HashMap<>();
-        map.put("serviceName","client1");
-        map.put("addr","localhost:8088");
+        Map<String, String> map = new HashMap<>();
+        map.put("serviceName", "client1");
+        map.put("addr", "localhost:8088");
+        map.put("type", "0");
         channel.writeAndFlush(JSON.toJSONString(map) + delimiter);
     }
 
+    public Channel getChannel() {
+        return channel;
+    }
+
+    public static Client getClient() {
+        return client;
+    }
+
     public static void main(String[] args) {
-        Client client = new Client();
         client.start();
     }
 }

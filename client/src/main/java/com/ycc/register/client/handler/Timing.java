@@ -1,5 +1,8 @@
 package com.ycc.register.client.handler;
 
+import com.ycc.register.Client;
+import io.netty.channel.Channel;
+
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
@@ -16,11 +19,9 @@ public class Timing {
 
     public void renewal(){
         ScheduledExecutorService ses = Executors.newScheduledThreadPool(1);
-        ses.scheduleAtFixedRate(new Runnable() {
-            @Override
-            public void run() {
-
-            }
+        ses.scheduleAtFixedRate(() -> {
+            Channel channel = Client.getClient().getChannel();
+            channel.writeAndFlush(Client.delimiter);
         },0,renewalPeriod, TimeUnit.SECONDS);
     }
 }

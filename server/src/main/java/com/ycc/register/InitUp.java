@@ -1,5 +1,7 @@
 package com.ycc.register;
 
+import java.io.IOException;
+
 /**
  * @author MysticalYcc
  * @date 2020/5/28
@@ -10,7 +12,9 @@ public class InitUp {
         try {
             server.init();
         } catch (InterruptedException e) {
-            e.printStackTrace();
+
+        }catch (Exception e){
+
         }
         ;
     }
