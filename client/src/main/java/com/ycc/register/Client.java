@@ -12,9 +12,6 @@ import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.nio.NioSocketChannel;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import static com.ycc.register.common.utils.IpUtil.getIP;
 import static com.ycc.register.common.utils.YmlUtil.getValue;
 
@@ -33,7 +30,7 @@ public class Client {
     String localIp = getIP();
     private ServiceInfo clientInfo = new ServiceInfo();
     static Client client = new Client();
-    Timing timing = new Timing();
+
 
     public void start() {
         group = new NioEventLoopGroup();
@@ -47,7 +44,6 @@ public class Client {
             sync.addListener(new FutureListener());
             channel = sync.channel();
             register();
-            timing.renewal();
         } catch (InterruptedException e) {
             destroyClient();
             e.printStackTrace();

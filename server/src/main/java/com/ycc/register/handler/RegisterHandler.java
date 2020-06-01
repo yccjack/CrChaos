@@ -70,8 +70,7 @@ public class RegisterHandler extends SimpleChannelInboundHandler<String> {
         String addr = channel.remoteAddress().toString();
         //删除
         notifyChatListRemove(channel, 2);
-        log.error("ChatServerHandler" + addr + "异常关闭! 即将关闭此连接通道");
-        cause.printStackTrace();
+        log.error("ChatServerHandler" + addr + "异常关闭! 即将关闭此连接通道"+",error: "+ cause.getMessage());
         ctx.close();
     }
 
@@ -115,10 +114,11 @@ public class RegisterHandler extends SimpleChannelInboundHandler<String> {
             dataInfo.serviceRegistration(serviceInfo);
             channelServiceInfoMap.put(ctx.channel(), serviceInfo);
             Map<String, Set<String>> serviceInfos = dataInfo.obtainServices();
+            serviceInfo.setRenewalPeriod(DataInfo.renewalPeriod);
             response = JSON.toJSONString(serviceInfos);
         } else {
             //心跳
-            log.info("客户端发送心跳:"+serviceInfo.getServiceName());
+            log.info("客户端续约:"+serviceInfo.toString());
         }
         ctx.writeAndFlush(response + ServiceInfo.delimiter);
 

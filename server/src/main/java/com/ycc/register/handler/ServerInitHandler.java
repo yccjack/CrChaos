@@ -1,6 +1,7 @@
 package com.ycc.register.handler;
 
 import com.ycc.register.common.info.ServiceInfo;
+import com.ycc.register.info.DataInfo;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import io.netty.channel.ChannelInitializer;
@@ -32,7 +33,7 @@ public class ServerInitHandler  extends ChannelInitializer<SocketChannel> {
                 .addLast("encoder", new StringEncoder())
 //                .addLast("httpServerCodec", new HttpServerCodec())
 //                .addLast("aggregator", new HttpObjectAggregator(65536))
-                .addLast(new IdleStateHandler(0, 0, 30, TimeUnit.SECONDS))
+                .addLast(new IdleStateHandler(0, 0, DataInfo.renewalPeriod, TimeUnit.SECONDS))
                 .addLast(new HeartbeatHandler())
                 .addLast("dataRegister",new RegisterHandler());
         log.info("ChatServerInitializer:" + socketChannel.remoteAddress() + "连接上");

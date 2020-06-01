@@ -26,7 +26,7 @@ public class DataInfo {
     /**
      * 服务续约时间
      */
-    static int renewalPeriod;
+   public static int renewalPeriod;
     /**
      * 开启时，服务不可用不会立马删除服务，会等待一定的时间删除服务
      */
@@ -100,6 +100,12 @@ public class DataInfo {
          * 注册服务的集群地址
          */
         private Map<String, Set<String>> serviceAddrInfos = new ConcurrentHashMap<>();
+
+      public RegisterInfo(){
+          Set<String> initSet = new HashSet<>(1);
+          initSet.add(String.valueOf(renewalPeriod));
+          serviceAddrInfos.put("renewalPeriod",initSet);
+      }
     }
 
 

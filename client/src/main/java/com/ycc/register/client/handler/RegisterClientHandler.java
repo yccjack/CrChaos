@@ -20,14 +20,20 @@ public class RegisterClientHandler extends SimpleChannelInboundHandler<String> {
 
     private Logger log = LoggerFactory.getLogger(RegisterClientHandler.class);
     RestRequest restRequest = new RestRequest();
-
+    Timing timing = new Timing();
     @Override
     protected void channelRead0(ChannelHandlerContext channelHandlerContext, String msg) throws Exception {
-        if (StringUtil.isNullOrEmpty(msg)) {
+        if(StringUtil.isNullOrEmpty(msg)){
             log.info("心跳返回");
-        } else {
+        }else {
             Map<String, Set<String>> services = JSON.parseObject(msg, new TypeReference<Map<String, Set<String>>>() {
             });
+            Set<String> renewalPeriod = services.get("renewalPeriod");
+            renewalPeriod.forEach((p)->{
+                timing.renewalPeriod=Integer.parseInt(p);
+            });
+
+            timing.renewal();
             restRequest.setServices(services);
         }
 

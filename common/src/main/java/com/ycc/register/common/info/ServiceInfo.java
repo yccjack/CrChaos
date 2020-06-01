@@ -1,6 +1,7 @@
 package com.ycc.register.common.info;
 
 import com.alibaba.fastjson.annotation.JSONField;
+import com.ycc.register.common.utils.YmlUtil;
 
 import java.beans.Transient;
 
@@ -75,7 +76,6 @@ public class ServiceInfo {
                 ", type=" + type +
                 '}';
     }
-
     public String getServiceName() {
         return serviceName;
     }
