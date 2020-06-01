@@ -1,11 +1,14 @@
 package com.ycc.register.info;
 
+import com.ycc.register.common.info.ServiceInfo;
+
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
-import static com.ycc.register.utils.YmlUtil.getValue;
+import static com.ycc.register.common.utils.YmlUtil.getValue;
+
 
 /**
  * @author MysticalYcc

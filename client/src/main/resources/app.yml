@@ -1,0 +1,4 @@
+server:
+  port: 8087
+  client:
+    serviceName: client_test_1

@@ -1,4 +1,4 @@
-package com.ycc.register.utils;
+package com.ycc.register.common.utils;
 
 import org.yaml.snakeyaml.Yaml;
 
@@ -40,6 +40,7 @@ public class YmlUtil {
     }
 
     public static Object getValue(String key) {
+        loadYml("app.yml");
         // 首先将key进行拆分
         String[] keys = key.split("[.]");
 

@@ -1,16 +1,14 @@
 package com.ycc.register.handler;
 
 import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.TypeReference;
+import com.ycc.register.common.info.ServiceInfo;
 import com.ycc.register.info.DataInfo;
-import com.ycc.register.info.ServiceInfo;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 import io.netty.channel.group.ChannelGroup;
 import io.netty.channel.group.DefaultChannelGroup;
 import io.netty.util.concurrent.GlobalEventExecutor;
-import io.netty.util.internal.StringUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -72,7 +70,7 @@ public class RegisterHandler extends SimpleChannelInboundHandler<String> {
         String addr = channel.remoteAddress().toString();
         //删除
         notifyChatListRemove(channel, 2);
-        log.error("ChatServerHandler" + addr + "异常!");
+        log.error("ChatServerHandler" + addr + "异常关闭! 即将关闭此连接通道");
         cause.printStackTrace();
         ctx.close();
     }
@@ -120,7 +118,7 @@ public class RegisterHandler extends SimpleChannelInboundHandler<String> {
             response = JSON.toJSONString(serviceInfos);
         } else {
             //心跳
-            log.info("心跳:"+serviceInfo.toString());
+            log.info("客户端发送心跳:"+serviceInfo.getServiceName());
         }
         ctx.writeAndFlush(response + ServiceInfo.delimiter);
 

@@ -1,6 +1,6 @@
 package com.ycc.register.handler;
 
-import com.ycc.register.info.ServiceInfo;
+import com.ycc.register.common.info.ServiceInfo;
 import io.netty.channel.ChannelFutureListener;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;

@@ -1,4 +1,9 @@
-com\ycc\register\handler\ChatClientHandler.class
-com\ycc\register\handler\ChatClientInitializer.class
-com\ycc\register\client.class
-com\ycc\register\listener\FutureListener.class
+com\ycc\register\client\handler\Timing.class
+com\ycc\register\client\banlance\RestRequest.class
+com\ycc\register\client\handler\RegisterClientHandler.class
+com\ycc\register\client\utils\YmlUtil.class
+com\ycc\register\client\utils\IpUtil.class
+com\ycc\register\client\listener\FutureListener.class
+com\ycc\register\client\handler\RegisterClientHandler$1.class
+com\ycc\register\client\handler\RegisterClientInitializer.class
+com\ycc\register\Client.class

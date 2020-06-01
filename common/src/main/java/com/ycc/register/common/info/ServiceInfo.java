@@ -1,4 +1,8 @@
-package com.ycc.register.info;
+package com.ycc.register.common.info;
+
+import com.alibaba.fastjson.annotation.JSONField;
+
+import java.beans.Transient;
 
 /**
  * @author MysticalYcc
@@ -26,6 +30,7 @@ public class ServiceInfo {
     /**
      * 服务状态 0：正常，1：即将下线； 2：异常待恢复；
      */
+    @JSONField(serialize = false)
     private int status = 0;
 
     private int type=0;

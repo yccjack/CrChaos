@@ -1,5 +1,6 @@
 com\ycc\register\info\DataInfo$RegisterInfo.class
 com\ycc\register\utils\YmlUtil.class
+com\ycc\register\info\ServiceInfo.class
 com\ycc\register\Server.class
 com\ycc\register\handler\HeartbeatHandler.class
 com\ycc\register\handler\RegisterHandler.class
