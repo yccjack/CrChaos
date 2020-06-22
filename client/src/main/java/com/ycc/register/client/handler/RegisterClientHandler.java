@@ -24,13 +24,13 @@ public class RegisterClientHandler extends SimpleChannelInboundHandler<String> {
     @Override
     protected void channelRead0(ChannelHandlerContext channelHandlerContext, String msg) throws Exception {
         if(StringUtil.isNullOrEmpty(msg)){
-            log.info("心跳返回");
+            log.info("续约成功！");
         }else {
             Map<String, Set<String>> services = JSON.parseObject(msg, new TypeReference<Map<String, Set<String>>>() {
             });
             Set<String> renewalPeriod = services.get("renewalPeriod");
             renewalPeriod.forEach((p)->{
-                timing.renewalPeriod=Integer.parseInt(p);
+                timing.setRenewalPeriod(Integer.parseInt(p));
             });
 
             timing.renewal();
