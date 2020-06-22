@@ -4,7 +4,12 @@
 *.iml
 # Log file
 *.log
-
+target
+client/target
+server/target
+common/target
+report.log
+logs
 # BlueJ files
 *.ctxt
 
